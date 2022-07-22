@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\Tweet;
+use Auth;
 
 class TweetController extends Controller
 {
@@ -54,7 +55,8 @@ class TweetController extends Controller
                 ->withErrors($validator);
         }
 
-        $result = Tweet::create($request->all());
+        $data = $request->merge(['user_id' => Auth::user()->id])->all();
+        $result = Tweet::create($data);
 
         return redirect()->route('tweet.index');
     }
