@@ -46,4 +46,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Tweet::class)->orderBy('updated_at', 'desc');
     }
+
+    public function tweets()
+    {
+        return $this->belongsToMany(Tweet::class)->withTimestamps();
+    }
 }
