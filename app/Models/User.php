@@ -41,4 +41,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function mytweets()
+    {
+        return $this->hasMany(Tweet::class)->orderBy('updated_at', 'desc');
+    }
+
+    public function tweets()
+    {
+        return $this->belongsToMany(Tweet::class)->withTimestamps();
+    }
 }
