@@ -7,6 +7,8 @@ use Validator;
 use App\Models\Tweet;
 use Auth;
 
+use App\Models\User;
+
 class TweetController extends Controller
 {
     /**
@@ -126,5 +128,14 @@ class TweetController extends Controller
         $result = Tweet::find($id)->delete();
 
         return redirect()->route('tweet.index');
+    }
+
+    public function mydata()
+    {
+        $tweets = User::find(Auth::user()->id)->mytweets;
+
+        return view('tweet.index', [
+            'tweets' => $tweets
+        ]);
     }
 }
