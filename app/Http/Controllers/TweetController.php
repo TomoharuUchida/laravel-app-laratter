@@ -15,8 +15,10 @@ class TweetController extends Controller
      */
     public function index()
     {
+        $tweets = Tweet::getAllOrderByUpdated_at();
+
         return view('tweet.index', [
-            'tweets' => []
+            'tweets' => $tweets
         ]);
     }
 
@@ -40,7 +42,7 @@ class TweetController extends Controller
     {
         //バリデーション
         $validator = Validator::make($request->all(), [
-            'tweets' => 'required|max:191',
+            'tweet' => 'required|max:191',
             'description' => 'required'
         ]);
 
@@ -52,7 +54,7 @@ class TweetController extends Controller
                 ->withErrors($validator);
         }
 
-        $result = Tweet::create($request->query->all());
+        $result = Tweet::create($request->all());
 
         return redirect()->route('tweet.index');
     }

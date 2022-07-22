@@ -10,7 +10,12 @@ class Tweet extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id',
+        'tweet',
         'description'
     ];
+
+    public static function getAllOrderByUpdated_at()
+    {
+        return self::orderBy('updated_at', 'desc')->get();
+    }
 }
