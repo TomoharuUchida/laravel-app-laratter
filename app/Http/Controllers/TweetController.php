@@ -79,7 +79,9 @@ class TweetController extends Controller
      */
     public function edit($id)
     {
-        //
+        $tweet = Tweet::find($id);
+
+        return view('tweet.edit', ['tweet' => $tweet]);
     }
 
     /**
@@ -91,7 +93,24 @@ class TweetController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //バリデーション
+        $validator = Validator::make($request->all(), [
+            'tweet' => 'required|max:191',
+            'description' => 'required'
+        ]);
+
+        // バリデーションエラー
+        if ($validator->fails()) {
+            return redirect()
+                ->route('tweet.edit', $id)
+                ->withInput()
+                ->withErrors($validator);
+        }
+        // $result = Tweet::find($id)->update($request->all());
+        // fill()save()は更新する情報がない場合は更新が走らない（updated_atが更新されない）
+        $result = Tweet::find($id)->fill($request->all())->save();
+
+        return redirect()->route('tweet.index');
     }
 
     /**
