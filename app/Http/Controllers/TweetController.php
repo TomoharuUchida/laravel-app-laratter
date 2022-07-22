@@ -38,7 +38,23 @@ class TweetController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //バリデーション
+        $validator = Validator::make($request->all(), [
+            'tweets' => 'required|max:191',
+            'description' => 'required'
+        ]);
+
+        // バリデーションエラー
+        if ($validator->fails()) {
+            return redirect()
+                ->route('tweet.create')
+                ->withInput()
+                ->withErrors($validator);
+        }
+
+        $result = Tweet::create($request->query->all());
+
+        return redirect()->route('tweet.index');
     }
 
     /**
